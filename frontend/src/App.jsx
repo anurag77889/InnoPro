@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ExpenseForm from "./components/ExpenseForm";
 import ExpenseList from "./components/ExpenseList";
+import ExpenseSummary from "./components/ExpenseSummary";
 
 const App = () => {
   const [refresh, setRefresh] = useState(false);
@@ -9,6 +10,7 @@ const App = () => {
     <div>
       <h1>InnoPro Expense Tracker</h1>
       <ExpenseForm onExpenseAdded={() => setRefresh(!refresh)} />
+      <ExpenseSummary refresh={refresh} />
       <ExpenseList key={refresh} />
     </div>
   );

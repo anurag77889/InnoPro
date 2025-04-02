@@ -43,4 +43,24 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// Get total expenses and spending by category
+router.get("/summary", async (req, res) => {
+  try {
+    // Get total amount spent
+    const [total] = await db.execute(
+      "SELECT SUM(amount) AS total_spent FROM expenses"
+    );
+    const totalSpent = total[0].total_spent || 0;
+
+    // Get spending by category
+    const [categoryWise] = await db.execute(
+      "SELECT category, SUM(amount) AS total FROM expenses GROUP BY category"
+    );
+
+    res.json({ totalSpent, categoryWise });
+  } catch (err) {
+    res.status(500).json({ error: "Database error", details: err.message });
+  }
+});
+
 export default router;

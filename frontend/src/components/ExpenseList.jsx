@@ -17,6 +17,15 @@ const ExpenseList = () => {
     fetchExpenses();
   }, []);
 
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/expenses/${id}`);
+      setExpenses(expenses.filter((expense) => expense.id !== id)); // Remove from UI
+    } catch (error) {
+      console.error("Error deleting expense:", error);
+    }
+  };
+
   return (
     <div>
       <h2>Expense List</h2>
@@ -25,6 +34,7 @@ const ExpenseList = () => {
           <li key={expense.id}>
             {expense.title} - ₹{expense.amount} ({expense.category}) [
             {expense.date}]
+            <button onClick={() => handleDelete(expense.id)}>Delete</button>
           </li>
         ))}
       </ul>
